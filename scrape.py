@@ -31,24 +31,35 @@ def sentiment_analyzer_scores(sentence):
     # print("{:-<40} {}".format(sentence, str(score)))
     return score
 
-tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(10)
+tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(50)
 totalCount = 0
 totalNeg = 0
 totalPos = 0
 totalNeutral = 0
 totalMixture = 0
+totalUnknown = 0
+
 for tweet in tweets:
     # print(tweet.text)
-    totalCount += 1
+    totalCount += 1.0
     newTweet = tweet.text.encode('ascii', 'ignore')
-    # print(sentiment_analyzer_scores(newTweet)['neg'])
-    totalNeg += sentiment_analyzer_scores(newTweet)['neg']
-    totalNeutral += sentiment_analyzer_scores(newTweet)['neu']
-    totalPos += sentiment_analyzer_scores(newTweet)['pos']
-    totalMixture += sentiment_analyzer_scores(newTweet)['compound']
+    print(sentiment_analyzer_scores(newTweet))
+    score = sentiment_analyzer_scores(newTweet)
+    if(score['neg'] > score['pos']):
+        totalNeg = totalNeg + 1.0
+    elif(score['pos'] > score['neg']):
+        totalPos = totalPos + 1.0
+    else:
+        totalUnknown += 1.0
 
-# print(totalCount)
-print(("Negative Opinions: " + totalNeg/totalCount)*100 + "%")
-print(("Positive Opinions: " + totalPos/totalCount)*100 + "%")
-print(("Neutral Opinions: " + totalNeutral/totalCount)*100 + "%")
-print(("Mixed Opinions: " + totalMixture/totalCount)*100 + "%")
+print(totalCount)
+print(totalNeg)
+print(totalPos)
+print(totalUnknown)
+resultPos = totalPos/totalCount * 100.0
+resultNeg = totalNeg/totalCount * 100.0
+resultUnknown = totalUnknown/totalCount * 100.0
+
+print("Negative Opinions: {}%").format(resultNeg)
+print("Positive Opinions: {}%").format(resultPos)
+print("Neutral/Unknown Opinions: {}%").format(resultUnknown)
