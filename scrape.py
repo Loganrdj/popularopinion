@@ -31,7 +31,7 @@ def sentiment_analyzer_scores(sentence):
     # print("{:-<40} {}".format(sentence, str(score)))
     return score
 
-tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(50)
+tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(1000)
 totalCount = 0
 totalNeg = 0
 totalPos = 0
@@ -39,11 +39,15 @@ totalNeutral = 0
 totalMixture = 0
 totalUnknown = 0
 
+print("Please wait a moment!")
+print("")
+print("Loading...")
+
 for tweet in tweets:
     # print(tweet.text)
     totalCount += 1.0
     newTweet = tweet.text.encode('ascii', 'ignore')
-    print(sentiment_analyzer_scores(newTweet))
+    # print(sentiment_analyzer_scores(newTweet))
     score = sentiment_analyzer_scores(newTweet)
     if(score['neg'] > score['pos']):
         totalNeg = totalNeg + 1.0
@@ -52,10 +56,10 @@ for tweet in tweets:
     else:
         totalUnknown += 1.0
 
-print(totalCount)
-print(totalNeg)
-print(totalPos)
-print(totalUnknown)
+# print(totalCount)
+# print(totalNeg)
+# print(totalPos)
+# print(totalUnknown)
 resultPos = totalPos/totalCount * 100.0
 resultNeg = totalNeg/totalCount * 100.0
 resultUnknown = totalUnknown/totalCount * 100.0
