@@ -31,7 +31,7 @@ def sentiment_analyzer_scores(sentence):
     # print("{:-<40} {}".format(sentence, str(score)))
     return score
 
-tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(1000)
+tweets = tweepy.Cursor(api.search, q=queryTerm, lang="en").items(500)
 totalCount = 0
 totalNeg = 0
 totalPos = 0

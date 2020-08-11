@@ -11,3 +11,5 @@ Tweepy Credentials and API keys required.
 - Python
 - Vader Sentiment Analysis
 - Tweepy
+
+![GIF of CLI](/scrapeGIF.gif)
